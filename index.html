@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>KYRO.AI</title>
+    <style>
+        body {
+            margin: 0;
+            background: url('/static/main-background.png') no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            color: white;
+            text-align: center;
+        }
+        .container {
+            padding-top: 50px;
+        }
+        input, button {
+            padding: 10px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+        .logo, .avatar {
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="/static/logo.png" alt="KYRO Logo" class="logo"><br>
+        <img src="/static/kyro-avatar.png" alt="KYRO Avatar" class="avatar"><br>
+        <h1>Welcome to KYRO.AI</h1>
+        <audio controls autoplay>
+            <source src="/static/kyro-voice.mp3" type="audio/mp3">
+        </audio><br>
+        <input type="text" id="message" placeholder="Ask KYRO something..." />
+        <button onclick="sendMessage()">Send</button>
+        <div id="response"></div>
+    </div>
+
+    <script>
+        function sendMessage() {
+            const message = document.getElementById("message").value;
+            fetch("/ask", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ message: message })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("response").innerText = data.reply;
+            });
+        }
+    </script>
+</body>
+</html>
